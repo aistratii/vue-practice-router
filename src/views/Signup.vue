@@ -5,19 +5,54 @@
                 <div class="card-body">
                     <h3 class="text-center my-4">Signup</h3>
                     <div class="form-group">
-                        <input type="text" placeholder="Name" class="form-control">
+                        <input v-model="name" type="text" placeholder="Name" class="form-control">
                     </div>
                     <div class="form-group">
-                        <input type="text" placeholder="Email" class="form-control">
+                        <input v-model="email"  type="text" placeholder="Email" class="form-control">
                     </div>
                     <div class="form-group">
-                        <input type="password" placeholder="Password" class="form-control">
+                        <input v-model="password" type="password" placeholder="Password" class="form-control">
                     </div>
                     <div class="form-group text-center">
-                        <button class="btn btn-success form-control">Signup</button>
+                        <button @click="registerUser()" class="btn btn-success form-control">Signup</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </template>
+
+<script>
+import Axios from 'axios'
+
+export default {
+    data() {
+        return {
+            name: "",
+            email: "",
+            password: ""
+        }
+    },
+    methods: {
+        registerUser(){
+            Axios.post(
+                'https://react-blog-api.bahdcasts.com/api/auth/register', 
+                {
+                    name: this.name,
+                    email: this.email,
+                    password: this.password
+                }
+            ).then(response => {
+                const authUserData = response.data.data;
+                localStorage.setItem('auth', JSON.stringify(authUserData));
+                this.$root.auth = authUserData;
+
+                this.$router.push('home');
+            }).catch(({response}) => {
+                console.error(response)
+            });
+        }
+    }
+}
+</script>
+
