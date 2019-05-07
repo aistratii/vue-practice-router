@@ -23,7 +23,7 @@
                             Wellcome, {{ authUser.name }}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Logout</a>
+                            <a class="dropdown-item" @click="logout">Logout</a>
                         </div>
                     </li>
                 </ul>
@@ -41,6 +41,12 @@ export default {
     computed: {
         authUser() {
             return this.$root.auth.user;
+        }
+    },
+    methods : {
+        logout(){
+            localStorage.removeItem('auth');
+            this.$root.auth={};
         }
     }
 }
