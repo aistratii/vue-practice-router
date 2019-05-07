@@ -56,7 +56,7 @@ export default {
                 
                 this.$root.auth = response.data.data;
                 localStorage.setItem('auth', JSON.stringify(response.data.data));
-                this.$router.push("home");
+                this.$router.push("/");
             }).catch(({response})=>{
                 this.loading = false;
 
