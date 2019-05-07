@@ -20,7 +20,7 @@
 
                     <li class="nav-item dropdown" v-if="authUser">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            こんにちは, {{ authUser.name }}-さん
+                            Wellcome, {{ authUser.name }}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="#">Logout</a>
