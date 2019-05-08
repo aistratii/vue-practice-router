@@ -7,6 +7,10 @@
                     <div class="card-body">
                         <h1 class="card-title text-center my-3">{{article.title}}</h1>
                         <div class="article-content" v-html="article.content"></div>
+
+                        <div class="coments my-4">
+                            <vue-disqus shortname="vue-practice-router" :identifier="article.slug" :uri="url"></vue-disqus>
+                        </div>
                     </div>
                 </div> 
                 <div class="loader text-center" v-else>
@@ -26,7 +30,8 @@ export default {
     data() {
         return {
             article: {},
-            loading: true
+            loading: true,
+            url: window.location.href
         }
     },
     mounted() {
