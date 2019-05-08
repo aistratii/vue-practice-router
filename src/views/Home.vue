@@ -1,7 +1,9 @@
 <template>
     <div class="row">
-        <div class="col-md-8 offset-md-2" v-if="articles.data" v-for="article in articles.data" :key="article.id">
-            <Article :article="article"/>
+        <div v-if="articles.data">
+            <div class="col-md-8 offset-md-2" v-for="article in articles.data" :key="article.id">
+                <Article :article="article"/>
+            </div>
         </div>
     </div>
 </template>
