@@ -1,9 +1,16 @@
 <template>
-    <div class="row">
-        <div v-if="articles.data">
+    <div>
+        <div class="d-flex mt-4 justify-content-between">
+            <button v-on:click="getPrevArticles" :disabled="articles.prev_page_url === null" class="btn btn-warning">Prev page</button>
+            <button @click="getNextArticles" :disabled="articles.next_page_url === null" class="btn btn-warning">Next page</button>
+        </div>
+        <div class="row" v-if="!loading">
             <div class="col-md-8 offset-md-2" v-for="article in articles.data" :key="article.id">
                 <Article :article="article"/>
             </div>
+        </div>
+        <div class="loader text-center" v-else>
+            <i class="fas fa-3x fa-spin fa-spinner"></i>
         </div>
     </div>
 </template>
@@ -22,16 +29,35 @@ export default {
     },
     data() {
         return {
-            articles: {}   
+            articles: {},
+            loading: true   
         }
     },
     methods: {
-        getArticles(){
-            Axios.get(`${config.apiUrl}/articles`).then(response => { 
+        getArticles(url = `${config.apiUrl}/articles`){
+            this.loading = true;
+
+            Axios.get(url).then(response => { 
+                this.loading = false;
                 this.articles = response.data.data;
             });
+        },
+        
+        getNextArticles() {
+            this.getArticles(this.articles.next_page_url);
+        },
+
+        getPrevArticles(){
+            this.getArticles(this.articles.prev_page_url);
         }
     }
 }
 </script>
+
+
+<style>
+    .btn-warning {
+        color: white
+    }
+</style>
 
