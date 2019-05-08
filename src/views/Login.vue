@@ -56,9 +56,12 @@ export default {
                 
                 this.$root.auth = response.data.data;
                 localStorage.setItem('auth', JSON.stringify(response.data.data));
+                this.$noty.success("Successfuly logged in");
                 this.$router.push("/");
             }).catch(({response})=>{
                 this.loading = false;
+
+                this.$noty.error("Could not log in");
 
                  if (response.status === 401) {
                      this.errors = {

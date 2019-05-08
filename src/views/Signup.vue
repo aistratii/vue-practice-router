@@ -71,10 +71,11 @@ export default {
                 const authUserData = response.data.data;
                 localStorage.setItem('auth', JSON.stringify(authUserData));
                 this.$root.auth = authUserData;
+                this.$noty.success("Successfuly registered");
 
                 this.$router.push('home');
             }).catch(({response}) => {
-                console.error(response.data);
+                this.$noty.error("Could not register");
                 
                 this.loading = false;
                 this.submitted = true;
