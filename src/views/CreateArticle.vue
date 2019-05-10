@@ -25,9 +25,11 @@
 <script>
 import PictureInput from 'vue-picture-input';
 import Axios from 'axios';
-import config from "@/config";
 
 export default {
+    mounted() {
+        console.log(process.env);
+    },
     components: {
         PictureInput
     },
@@ -45,10 +47,10 @@ export default {
         createArticle(){
             const form = new FormData();
             form.append('file', this.image);
-            form.append('upload_preset', 'my-preset-name');
-            form.append('api_key', '432956187613698');
+            form.append('upload_preset', process.env.VUE_APP_CLOUDINARY_PRESET);
+            form.append('api_key', process.env.VUE_APP_CLOUDINARY_API_KEY);
 
-            Axios.post(`${config.imageUploadUrl}`, form)
+            Axios.post(process.env.VUE_APP_CLOUDINARY_URL, form)
             .then(response => {
                 console.log(response);
             }).catch(error => {
