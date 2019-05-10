@@ -14,7 +14,7 @@
                             <option>Select a category</option>
                             <option v-for="category in categories" :value="category.id" :key="category.id">{{category.name}}</option>
                         </select>
-                        <input type="text" placeholder="Title" class="form-control my-3">
+                        <input type="text" v-model="title" placeholder="Title" class="form-control my-3">
                         <wysiwyg v-model="content"/>
                         <div class="text-center">
                             <button @click="createArticle" class="btn btn-success mt-3">Create article</button>
@@ -32,6 +32,13 @@ import Axios from 'axios';
 import config from "@/config";
 
 export default {
+    beforeRouteEnter(to, from, next){
+        if(!localStorage.getItem('auth')){
+            return next({path: "/"});
+        }
+
+        next();
+    },
     mounted() {
         this.getCategories();
     },
@@ -43,7 +50,8 @@ export default {
             content: "",
             image: null,
             categories: [],
-            category:""
+            category:"",
+            title: ""
         }
     },
     methods: {
@@ -59,7 +67,26 @@ export default {
 
             Axios.post(process.env.VUE_APP_CLOUDINARY_URL, form)
             .then(response => {
-                console.log(response);
+
+                Axios.post(`${config.apiUrl}/articles`,{  
+                        title: this.title,
+                        content: this.content,
+                        category_id: this.category,
+                        imageUrl: response.data.secure_url
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${this.$root.auth.token}`
+                        }
+                    }
+                ).then(() => {
+                    this.$noty.success('Article created successfuly');
+                    this.$router.push("/");
+                }).catch(error => {
+                    this.$noty.error('Could not save creating article');
+                    console.error(error);
+                });
+                
             }).catch(error => {
                 console.error(error);
             });
